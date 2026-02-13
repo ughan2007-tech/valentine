@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(-45deg,#ff4e8a,#ff7eb3,#ffb6c1,#ffd6e8);
+    background-size:400% 400%;
+    animation:gradientBG 10s ease infinite;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    overflow:hidden;
+}
+
+@keyframes gradientBG{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Main Card */
+.container{
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(10px);
+    padding:30px 20px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    width:90%;
+    max-width:380px;
+}
+
+h1{
+    color:white;
+    margin-bottom:20px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+
+button{
+    padding:12px 26px;
+    font-size:18px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#yesBtn{
+    background:#ff2e63;
+    color:white;
+}
+
+#yesBtn:hover{
+    transform:scale(1.1);
+}
+
+#noBtn{
+    background:#444;
+    color:white;
+    position:absolute;
+}
+
+/* Gallery */
+.gallery{
+    width:100%;
+    max-width:400px;
+    padding:20px;
+    color:white;
+    text-align:center;
+}
+
+.gallery img{
+    width:100%;
+    max-height:60vh;
+    object-fit:contain;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    margin-top:15px;
+}
+
+.quote{
+    margin-top:15px;
+    font-size:18px;
+    line-height:1.5;
+}
+
+.nextBtn{
+    margin-top:20px;
+    background:#ff2e63;
+    color:white;
+    padding:10px 25px;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+}
+
+/* Floating hearts */
+.heart{
+    position:absolute;
+    bottom:-20px;
+    color:white;
+    animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-100vh);
+        opacity:0;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container" id="mainCard">
+    <h1>Will you be my Valentine? ❤️</h1>
+    <div class="buttons">
+        <button id="yesBtn" onclick="startGallery()">Yes</button>
+        <button id="noBtn">No</button>
+    </div>
+</div>
+
+<script>
+
+/* Impossible NO button */
+const noBtn = document.getElementById("noBtn");
+
+function moveNo(){
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+/* Images (YOUR FILE NAMES) */
+const images = [
+    "pic1.jpeg",
+    "pic2.jpeg",
+    "pic3.jpeg",
+    "pic4.jpeg"
+];
+
+const quotes = [
+    "You are my happiness ❤️",
+    "Every moment with you is special",
+    "Life is beautiful with you",
+    "I just need you forever 💖"
+];
+
+let index = 0;
+
+/* Start Gallery */
+function startGallery(){
+    showSlide();
+}
+
+function showSlide(){
+    if(index >= images.length){
+        document.body.innerHTML = `
+        <div class="gallery">
+            <h1>I Love You Forever ❤️</h1>
+            <div class="quote">
+            Thank you for being my life, my love, my everything.
+            </div>
+        </div>`;
+        return;
+    }
+
+    document.body.innerHTML = `
+    <div class="gallery">
+        <h1>My Love ❤️</h1>
+        <img src="${images[index]}">
+        <div class="quote">${quotes[index]}</div>
+        <button class="nextBtn" onclick="nextSlide()">Next</button>
+    </div>`;
+}
+
+function nextSlide(){
+    index++;
+    showSlide();
+}
+
+/* Floating hearts */
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (Math.random()*20 + 15) + "px";
+    heart.style.animationDuration = (Math.random()*3 + 3) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,500);
+
+</script>
+
+</body>
+</html>
