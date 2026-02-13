@@ -18,12 +18,13 @@ body{
     min-height:100vh;
     background:linear-gradient(-45deg,#ff4e8a,#ff7eb3,#ffb6c1,#ffd6e8);
     background-size:400% 400%;
-    animation:gradientBG 10s ease infinite;
+    animation:gradientBG 12s ease infinite;
     display:flex;
     justify-content:center;
     align-items:center;
     text-align:center;
     overflow:hidden;
+    color:white;
 }
 
 @keyframes gradientBG{
@@ -34,21 +35,18 @@ body{
 
 /* Main Card */
 .container{
-    background:rgba(255,255,255,0.2);
-    backdrop-filter:blur(10px);
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(12px);
     padding:30px 20px;
     border-radius:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
     width:90%;
-    max-width:380px;
+    max-width:360px;
 }
 
-h1{
-    color:white;
-    margin-bottom:20px;
-}
-
+/* Buttons */
 .buttons{
+    margin-top:20px;
     display:flex;
     justify-content:center;
     gap:20px;
@@ -60,7 +58,7 @@ button{
     border:none;
     border-radius:25px;
     cursor:pointer;
-    transition:0.3s;
+    transition:0.25s;
 }
 
 #yesBtn{
@@ -68,28 +66,27 @@ button{
     color:white;
 }
 
-#yesBtn:hover{
-    transform:scale(1.1);
+#yesBtn:active{
+    transform:scale(0.95);
 }
 
 #noBtn{
     background:#444;
     color:white;
-    position:absolute;
+    position:relative;
 }
 
 /* Gallery */
 .gallery{
     width:100%;
-    max-width:400px;
+    max-width:420px;
     padding:20px;
-    color:white;
-    text-align:center;
 }
 
 .gallery img{
     width:100%;
-    max-height:60vh;
+    height:auto;
+    max-height:65vh;
     object-fit:contain;
     border-radius:15px;
     box-shadow:0 10px 25px rgba(0,0,0,0.3);
@@ -112,23 +109,16 @@ button{
     font-size:16px;
 }
 
-/* Floating hearts */
+/* Light floating hearts (low lag) */
 .heart{
     position:absolute;
     bottom:-20px;
-    color:white;
     animation:floatUp linear infinite;
 }
 
 @keyframes floatUp{
-    from{
-        transform:translateY(0);
-        opacity:1;
-    }
-    to{
-        transform:translateY(-100vh);
-        opacity:0;
-    }
+    from{ transform:translateY(0); opacity:1; }
+    to{ transform:translateY(-100vh); opacity:0; }
 }
 </style>
 
@@ -138,28 +128,31 @@ button{
 
 <div class="container" id="mainCard">
     <h1>Will you be my Valentine? ❤️</h1>
-    <div class="buttons">
-        <button id="yesBtn" onclick="startGallery()">Yes</button>
-        <button id="noBtn">No</button>
-    </div>
+
+```
+<div class="buttons">
+    <button id="yesBtn" onclick="startGallery()">Yes</button>
+    <button id="noBtn">No</button>
+</div>
+```
+
 </div>
 
 <script>
 
-/* Impossible NO button */
+/* Fun NO button (moves only little, no overlap) */
 const noBtn = document.getElementById("noBtn");
 
 function moveNo(){
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    const moveX = (Math.random() * 60) - 30; // move ±30px
+    const moveY = (Math.random() * 40) - 20; // move ±20px
+    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
 }
 
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
 
-/* Images (YOUR FILE NAMES) */
+/* Images (must match GitHub names) */
 const images = [
     "pic1.jpeg",
     "pic2.jpeg",
@@ -178,6 +171,7 @@ let index = 0;
 
 /* Start Gallery */
 function startGallery(){
+    index = 0;
     showSlide();
 }
 
@@ -187,7 +181,8 @@ function showSlide(){
         <div class="gallery">
             <h1>I Love You Forever ❤️</h1>
             <div class="quote">
-            Thank you for being my life, my love, my everything.
+            Thank you for being my life, my love, my everything.<br><br>
+            You mean the world to me.
             </div>
         </div>`;
         return;
@@ -196,7 +191,7 @@ function showSlide(){
     document.body.innerHTML = `
     <div class="gallery">
         <h1>My Love ❤️</h1>
-        <img src="${images[index]}">
+        <img src="${images[index]}" alt="memory">
         <div class="quote">${quotes[index]}</div>
         <button class="nextBtn" onclick="nextSlide()">Next</button>
     </div>`;
@@ -207,19 +202,21 @@ function nextSlide(){
     showSlide();
 }
 
-/* Floating hearts */
+/* Reduced hearts for smooth performance */
 function createHeart(){
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.innerHTML = "❤️";
     heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (Math.random()*20 + 15) + "px";
-    heart.style.animationDuration = (Math.random()*3 + 3) + "s";
+    heart.style.fontSize = (Math.random()*15 + 12) + "px";
+    heart.style.animationDuration = (Math.random()*2 + 4) + "s";
     document.body.appendChild(heart);
 
     setTimeout(()=>heart.remove(),6000);
 }
-setInterval(createHeart,500);
+
+/* Create hearts slowly (no lag) */
+setInterval(createHeart, 1200);
 
 </script>
 
